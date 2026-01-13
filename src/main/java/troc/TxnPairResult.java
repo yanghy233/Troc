@@ -44,12 +44,23 @@ public class TxnPairResult {
         StringBuilder sb = new StringBuilder();
         sb.append("Result:\nOrder:").append(order).append("\n");
         sb.append("Query Results:\n");
+        // @yhy 记录 valid operation 占比
         for (StatementCell stmt : order) {
+            if (stmt.statement.contains("SELECT")) {
+                Main.totalOperations += 1;
+                if (stmt.result != null && !stmt.result.isEmpty()) {
+                    Main.validOperations += 1;
+                }
+            }
             sb.append("\t").append(stmt.tx.txId).append("-").append(stmt.statementId)
                     .append(": ").append(stmt.result).append("\n");
         }
+        Double validOpsRate = Main.totalOperations == 0 ? 0.0 :
+                (Double.valueOf(Main.validOperations) / Double.valueOf(Main.totalOperations)) * 100;
         sb.append("FinalState: ").append(finalState).append("\n");
         sb.append("DeadBlock: ").append(isDeadBlock).append("\n");
+        sb.append("totalValid operations: ").append(Main.validOperations).append("/")
+                .append(Main.totalOperations).append(" (").append(String.format("%.2f", validOpsRate)).append("%)\n");
         return sb.toString();
     }
 }

@@ -67,7 +67,9 @@ public abstract class Table {
         while (!this.create()) {
             log.info("Create table failed, {}", getCreateTableSql());
         }
-        for (int i = 0; i < Randomly.getNextInt(5, 15); i++) {
+        // @yhy 调整表中的数据规模
+        int recordNum = Randomly.getNextInt(5, 15);
+        for (int i = 0; i < recordNum; i++) {
             String initSQL;
             if (Randomly.getNextInt(0, 15) == 10) {
                 initSQL = genAddIndexStatement();

@@ -12,6 +12,10 @@ import java.util.Scanner;
 
 @Slf4j
 public class Main {
+
+    public static Long totalOperations = 0L;
+    public static Long validOperations = 0L;
+
     public static void main(String[] args) {
         Options options = new Options();
         JCommander jCmd = new JCommander();
